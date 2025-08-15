@@ -26,4 +26,7 @@ RUN mkdir -p /app/data
 # Set environment variable for database path
 ENV ConnectionStrings__DefaultConnection="Data Source=/app/data/app.db"
 
+# Set production environment
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 ENTRYPOINT ["dotnet", "llm.dll"]
