@@ -1,6 +1,15 @@
 # LLM - ASP.NET Core Razor Pages Application
 
-A modern ASP.NET Core Razor Pages web application built with .NET 9.
+A modern ASP.NET Core Razor Pages web application built with .NET 9, featuring SQLite database integration and Docker support.
+
+## 🎯 Features
+
+- **ASP.NET Core 9.0** - Latest .NET framework
+- **Razor Pages** - Server-side rendering with clean architecture
+- **SQLite Database** - Lightweight, file-based database with Entity Framework Core
+- **Docker Support** - Fully containerized for easy deployment
+- **Bootstrap UI** - Responsive, modern interface
+- **Sample Data** - Pre-seeded with example users
 
 ## 📋 Prerequisites
 
@@ -37,6 +46,26 @@ Before you begin, ensure you have the following installed on your system:
 5. **Access the application:**
    - Open your browser and navigate to `https://localhost:7000` or `http://localhost:5000`
    - The exact URLs will be displayed in the terminal when the application starts
+   - Visit `/Users` to see the database in action
+
+## 🗄️ Database Information
+
+The application uses **SQLite** as its database, which provides:
+
+- **File-based storage** - No server setup required
+- **Automatic database creation** - Database is created on first run
+- **Sample data** - Pre-seeded with example users
+- **Entity Framework Core** - Modern ORM for data access
+
+### Database Features:
+- User management with basic CRUD operations
+- Email uniqueness constraints
+- Automatic timestamps
+- Data validation attributes
+
+### Database File Location:
+- **Local Development**: `app.db` in the project root
+- **Docker Container**: `/app/data/app.db`
 
 ## 🐳 Docker Deployment
 
@@ -54,6 +83,17 @@ Before you begin, ensure you have the following installed on your system:
 
 3. **Access the dockerized application:**
    - Open your browser and navigate to `http://localhost:8080`
+   - Visit `http://localhost:8080/Users` to see the database functionality
+
+### Persistent Database Storage
+
+To persist database data between container restarts, use a volume:
+
+```bash
+docker run -d -p 8080:8080 -v llm-data:/app/data --name llm-container llm-app
+```
+
+This creates a named volume `llm-data` that persists the SQLite database.
 
 ### Docker Management Commands
 
@@ -116,8 +156,13 @@ docker run -d -p 8080:8080 --name llm-app your-username/llm-app:latest
 
 ```
 llm/
+├── Data/               # Database context and configuration
+│   └── ApplicationDbContext.cs
+├── Models/             # Data models and entities
+│   └── User.cs         # User entity
 ├── Pages/              # Razor Pages
 │   ├── Index.cshtml    # Home page
+│   ├── Users.cshtml    # Users list page
 │   ├── Privacy.cshtml  # Privacy page
 │   └── Shared/         # Shared layouts and partials
 ├── wwwroot/            # Static files (CSS, JS, images)

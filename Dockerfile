@@ -19,4 +19,11 @@ RUN dotnet publish "llm.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Create directory for SQLite database
+RUN mkdir -p /app/data
+
+# Set environment variable for database path
+ENV ConnectionStrings__DefaultConnection="Data Source=/app/data/app.db"
+
 ENTRYPOINT ["dotnet", "llm.dll"]
