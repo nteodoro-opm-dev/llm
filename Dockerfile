@@ -2,7 +2,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
-ENV ASPNETCORE_URLS=http://+:8080
 
 # Use the SDK image to build the application
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -23,10 +22,13 @@ COPY --from=publish /app/publish .
 # Create directory for SQLite database
 RUN mkdir -p /app/data
 
-# Set environment variable for database path
+# Set environment variables
+ENV ASPNETCORE_URLS=http://+:8080
 ENV ConnectionStrings__DefaultConnection="Data Source=/app/data/app.db"
-
-# Set production environment
 ENV ASPNETCORE_ENVIRONMENT=Production
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
 
 ENTRYPOINT ["dotnet", "llm.dll"]
