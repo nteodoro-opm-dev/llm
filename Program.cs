@@ -2,11 +2,36 @@ using Microsoft.EntityFrameworkCore;
 using llm.Data;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    // Allow anonymous access to specific pages
+    options.Conventions.AllowAnonymousToPage("/Index");
+    options.Conventions.AllowAnonymousToPage("/Privacy");
+    options.Conventions.AllowAnonymousToPage("/Error");
+    options.Conventions.AllowAnonymousToFolder("/Account");
+});
+
+// Add Azure AD authentication
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+// Add authorization
+builder.Services.AddAuthorization(options =>
+{
+    // Require authentication for all pages by default
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // Add Entity Framework and SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -79,9 +104,11 @@ app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 
-app.UseRouting();
-
+// Add authentication and authorization middleware
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRouting();
 
 app.MapStaticAssets();
 app.MapRazorPages()

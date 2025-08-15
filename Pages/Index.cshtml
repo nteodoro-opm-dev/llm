@@ -6,24 +6,74 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to LLM App</h1>
-    <p class="lead">An ASP.NET Core Razor Pages application with SQLite database support.</p>
+    <p class="lead">An ASP.NET Core Razor Pages application with Office 365 authentication and SQLite database support.</p>
+    
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle"></i>
+            <strong>Welcome back, @(User.Claims?.FirstOrDefault(c => c.Type == "name")?.Value ?? "User")!</strong>
+            You are successfully signed in with your Office 365 account.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i>
+            <strong>Authentication Required:</strong> Please sign in with your Office 365 account to access all features.
+            <div class="mt-2">
+                <a asp-page="/Account/Login" class="btn btn-primary">
+                    <i class="bi bi-microsoft"></i> Sign In with Office 365
+                </a>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="row mt-5">
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">🌐 Web Application</h5>
-                <p class="card-text">Built with ASP.NET Core 9.0 and Razor Pages for modern web development.</p>
+                <h5 class="card-title">
+                    <i class="bi bi-shield-check"></i>
+                    Office 365 Authentication
+                </h5>
+                <p class="card-text">Secure authentication using Azure Active Directory and Office 365 accounts.</p>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-page="/Account/Profile" class="btn btn-success btn-sm">
+                        <i class="bi bi-person-badge"></i> View Profile
+                    </a>
+                }
+                else
+                {
+                    <a asp-page="/Account/Login" class="btn btn-primary btn-sm">
+                        <i class="bi bi-box-arrow-in-right"></i> Sign In
+                    </a>
+                }
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">🗄️ Database Ready</h5>
+                <h5 class="card-title">
+                    <i class="bi bi-database"></i>
+                    Database Ready
+                </h5>
                 <p class="card-text">Includes SQLite database with Entity Framework Core for data persistence.</p>
-                <a href="/Users/Index" class="btn btn-primary btn-sm">View Users</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a href="/Users/Index" class="btn btn-primary btn-sm">
+                        <i class="bi bi-people"></i> Manage Users
+                    </a>
+                }
+                else
+                {
+                    <button class="btn btn-secondary btn-sm" disabled>
+                        <i class="bi bi-lock"></i> Sign in required
+                    </button>
+                }
             </div>
         </div>
     </div>
