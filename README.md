@@ -7,8 +7,10 @@ A modern ASP.NET Core Razor Pages web application built with .NET 9, featuring S
 - **ASP.NET Core 9.0** - Latest .NET framework
 - **Razor Pages** - Server-side rendering with clean architecture
 - **SQLite Database** - Lightweight, file-based database with Entity Framework Core
+- **Complete CRUD Operations** - Create, Read, Update, Delete functionality for users
+- **Data Validation** - Server-side validation with error handling
+- **Responsive UI** - Bootstrap-based responsive interface
 - **Docker Support** - Fully containerized for easy deployment
-- **Bootstrap UI** - Responsive, modern interface
 - **Sample Data** - Pre-seeded with example users
 
 ## 📋 Prerequisites
@@ -46,7 +48,7 @@ Before you begin, ensure you have the following installed on your system:
 5. **Access the application:**
    - Open your browser and navigate to `https://localhost:7000` or `http://localhost:5000`
    - The exact URLs will be displayed in the terminal when the application starts
-   - Visit `/Users` to see the database in action
+   - Visit `/Users` to see the database in action with full CRUD operations
 
 ## 🗄️ Database Information
 
@@ -56,6 +58,21 @@ The application uses **SQLite** as its database, which provides:
 - **Automatic database creation** - Database is created on first run
 - **Sample data** - Pre-seeded with example users
 - **Entity Framework Core** - Modern ORM for data access
+
+### 🔧 CRUD Operations Available:
+
+**📋 User Management:**
+- **Create** - Add new users with validation
+- **Read** - List all users and view individual details
+- **Update** - Edit user information with constraints
+- **Delete** - Remove users with confirmation
+
+**🎯 Features:**
+- Email uniqueness validation
+- Server-side form validation
+- Responsive Bootstrap UI
+- Confirmation dialogs for destructive actions
+- Automatic timestamp tracking
 
 ### Database Features:
 - User management with basic CRUD operations
@@ -83,7 +100,7 @@ The application uses **SQLite** as its database, which provides:
 
 3. **Access the dockerized application:**
    - Open your browser and navigate to `http://localhost:8080`
-   - Visit `http://localhost:8080/Users` to see the database functionality
+   - Visit `http://localhost:8080/Users` to manage users with full CRUD operations
 
 ### Persistent Database Storage
 
