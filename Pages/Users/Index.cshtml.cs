@@ -14,11 +14,11 @@ namespace llm.Pages.Users
             _context = context;
         }
 
-        public IList<User> Users { get; set; } = default!;
+        public IList<User> UsersList { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Users = await _context.Users
+            UsersList = await _context.Users
                 .OrderByDescending(u => u.CreatedAt)
                 .ToListAsync();
         }
